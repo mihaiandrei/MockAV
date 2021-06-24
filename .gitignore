@@ -9,3 +9,7 @@
 /AvService/obj
 /AvService/bin/Debug/netcoreapp3.1
 /AvService/AvService.csproj.user
+/.vs/AVClient/v16/TestStore/0
+/AvService.Domain.Test/bin/Debug/netcoreapp3.1
+/AvService.Domain.Test/obj
+/AvService.Domain/obj
