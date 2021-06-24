@@ -8,7 +8,7 @@ namespace AvService.Domain
         IScanner scanner;
         private INotifier notifier;
 
-        public bool ScanInProgress { get; set; }
+
         bool RealTimeScanEnabled { get; set; } = true;
 
         public ScannerManager(IScanner scanner, INotifier notifier)
@@ -28,16 +28,17 @@ namespace AvService.Domain
             RealTimeScanEnabled = false;
         }
 
-        public async Task StartOnDemandScanAsync()
+        public async Task<bool> StartOnDemandScanAsync()
         {
-            if (ScanInProgress)
+            if (notifier.ScanInProgress)
             {
-                await notifier.SendAsync(new Notification());
+                return false;
             }
             else
             {
                 scanner.StartAsync();
-                await notifier.SendAsync(new Notification());
+                await notifier.SendAsync(new StartScanOnDemandNotification());
+                return true;
             }
         }
 

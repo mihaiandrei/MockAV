@@ -15,14 +15,28 @@ namespace AvService.Domain.Test
         [SetUp]
         public void Setup()
         {
+            scannerMock = new Mock<IScanner>();
+            notifierMock = new Mock<INotifier>();
+
             scannerManager = new ScannerManager(scannerMock.Object, notifierMock.Object);
         }
 
         [Test]
-        public async Task Test1()
+        public async Task WhenAnOnDemandScanIsStartedThenANotificationIsSent()
         {
-            await scannerManager.StartOnDemandScanAsync();
+            var scanStarted = await scannerManager.StartOnDemandScanAsync();
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StartScanOnDemandNotification>()));
+            scannerMock.Verify(s => s.StartAsync());
+            Assert.IsTrue(scanStarted);
+        }
+
+        [Test]
+        public async Task WhenAScanIsInProgressThenTheStartScanCanNotBeStarted()
+        {
+            var scanStarted = await scannerManager.StartOnDemandScanAsync();
+            notifierMock.Verify(n => n.SendAsync(It.IsAny<StartScanOnDemandNotification>()), Times.Never);
+            scannerMock.Verify(s => s.StartAsync(), Times.Never);
+            Assert.IsFalse(scanStarted);
         }
     }
 }
