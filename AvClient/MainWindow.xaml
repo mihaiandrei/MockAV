@@ -1,0 +1,29 @@
+﻿<Window x:Class="AVClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AVClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="ConnectButton" Content="Connect" Grid.Row="0" Grid.Column="0" Click="ConnectButton_Click"/>
+        <Button x:Name="DisconnectButton" Content="Disconnect" Grid.Row="0" Grid.Column="1" Click="DisconnectButton_Click"/>
+
+        <Button x:Name="StartOnDemandButton" Content="Start Scan" Grid.Row="1" Grid.Column="0" Click="StartOnDemandButton_Click"/>
+        <Button x:Name="StopOnDemandButton" Content="Stop Scan" Grid.Row="1" Grid.Column="1" Click="StopOnDemandButton_Click"/>
+
+        <Button x:Name="EnableRealtimeScanButton" Content="Enable Realtime Scan" Grid.Row="2" Grid.Column="0" Click="EnableRealtimeScanButton_Click"/>
+        <Button x:Name="DisablRealtimeScanButton" Content="Disable Realtime Scan" Grid.Row="2" Grid.Column="1" Click="DisablRealtimeScanButton_Click"/>
+    </Grid>
+</Window>

@@ -58,7 +58,7 @@ O bibliotecă ce deservește o integrare locală cu serviciul descris mai sus.
 Ne așteptăm la implementări de clienți care folosesc API-urile, cel puțin două implementări, un client în C# și unul web.
 Autentificare ???
 
-# Delivarables
+# Deliverables
 - Un mock de serviciu/produs AV code name MockAV
 - O bibliotecă ce deservește o integrare locală cu serviciul descris mai sus.
 - Resurse ce deservesc o integrare remote cu serviciul mai sus menționat.
