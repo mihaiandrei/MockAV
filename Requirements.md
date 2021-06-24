@@ -2,7 +2,6 @@ MockAV este un serviciu destinat dispozitivelor de tip endpoint și va expune un
 
 
 # Requirements
-Următoarele funcționalități se vor implementa și vor fi expuse în SDK/API-uri:
 
 ## Connect
 Nu se permite conectarea concurentă a mai multor clienți la produs via API-uri.
