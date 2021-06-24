@@ -6,3 +6,6 @@
 *.suo
 /AvClient/obj
 /AvClient/bin/Debug/netcoreapp3.1
+/AvService/obj
+/AvService/bin/Debug/netcoreapp3.1
+/AvService/AvService.csproj.user
