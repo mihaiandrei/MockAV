@@ -6,6 +6,6 @@ namespace AvService
     public interface INotifier
     {
         Task SendAsync(Notification notification);
-        bool ScanInProgress { get; }
+        
     }
 }

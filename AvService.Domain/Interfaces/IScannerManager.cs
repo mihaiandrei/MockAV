@@ -6,7 +6,7 @@ namespace AvService
     {
         void DisableRealTimeScan();
         void EnableRealTimeScan();
-        Task StartOnDemandScanAsync();
-        Task StopOnDemandScanAsync();
+        Task<bool> StartOnDemandScanAsync();
+        void StopOnDemandScan();
     }
 }

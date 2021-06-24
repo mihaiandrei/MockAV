@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using AvService.Domain;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AvService
 {
     public interface IScanner
     {
-        Task StartAsync();
-        void Stop();
+        Task<IEnumerable<InfectedObject>> ScanAsync(CancellationToken cancellationToken);
     }
 }

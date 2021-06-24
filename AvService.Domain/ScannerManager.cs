@@ -1,4 +1,6 @@
 using AvService.Domain.Notifications;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AvService.Domain
@@ -7,7 +9,9 @@ namespace AvService.Domain
     {
         IScanner scanner;
         private INotifier notifier;
-
+        CancellationTokenSource source;
+        CancellationToken cancellationToken;
+        private bool scanInProgress;
 
         bool RealTimeScanEnabled { get; set; } = true;
 
@@ -24,28 +28,42 @@ namespace AvService.Domain
 
         public void DisableRealTimeScan()
         {
-
             RealTimeScanEnabled = false;
         }
 
         public async Task<bool> StartOnDemandScanAsync()
         {
-            if (notifier.ScanInProgress)
+            if (scanInProgress)
             {
                 return false;
             }
             else
             {
-                scanner.StartAsync();
+                scanInProgress = true;
+                source = new CancellationTokenSource();
+                cancellationToken = source.Token;
+
                 await notifier.SendAsync(new StartScanOnDemandNotification());
-                return true;
+
+                Scan();
             }
+            return true;
         }
 
-        public async Task StopOnDemandScanAsync()
+        private async Task Scan()
         {
-            scanner.Stop();
-            await notifier.SendAsync(new Notification());
+            var infectedItems = await scanner.ScanAsync(cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
+                await notifier.SendAsync(new StopScanOnDemandNotification(infectedItems));
+            else
+                await notifier.SendAsync(new StopScanSuccessNotification(infectedItems));
+
+            scanInProgress = false;
+        }
+
+        public void StopOnDemandScan()
+        {
+            source.Cancel();
         }
     }
 }
