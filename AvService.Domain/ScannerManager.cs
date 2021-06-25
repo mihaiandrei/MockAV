@@ -1,21 +1,24 @@
 using AvService.Domain.Notifications;
-using System.Threading; 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AvService.Domain
 {
     public class ScannerManager : IScannerManager
     {
-        IScanner scanner;
-        private INotifier notifier;
-        CancellationTokenSource source;
-        CancellationToken cancellationToken;
+        private readonly IScanner scanner;
+        private readonly INotifier notifier;
+
+        private CancellationTokenSource source;
+        private CancellationToken cancellationToken;
         private bool scanInProgress;
 
-        public ScannerManager(IScanner scanner, INotifier notifier)
+        public ScannerManager(IScanner scanner,
+                                INotifier notifier)
         {
             this.scanner = scanner;
             this.notifier = notifier;
+
         }
 
         public async Task<bool> StartOnDemandScanAsync()
@@ -31,7 +34,6 @@ namespace AvService.Domain
                 cancellationToken = source.Token;
 
                 await notifier.SendAsync(new StartScanOnDemandNotification());
-
                 Scan();
             }
             return true;
@@ -41,11 +43,16 @@ namespace AvService.Domain
         {
             var infectedItems = await scanner.ScanAsync(cancellationToken);
             if (cancellationToken.IsCancellationRequested)
+            {
                 await notifier.SendAsync(new StopScanOnDemandNotification());
+            }
             else
+            {
                 await notifier.SendAsync(new StopScanSuccessNotification());
+            }
 
             await notifier.SendAsync(new ThreatFoundNotification(infectedItems));
+
             scanInProgress = false;
         }
 

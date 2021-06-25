@@ -5,9 +5,22 @@ namespace AvService.Domain
 {
     public class Notifier : INotifier
     {
+        private readonly IConnectedClientManager connectedClientManager;
+        private readonly INotificationPersister notificationPersister;
+
+        public Notifier(IConnectedClientManager connectedClientManager,
+                        INotificationPersister notificationPersister)
+        {
+            this.connectedClientManager = connectedClientManager;
+            this.notificationPersister = notificationPersister;
+        }
+
         public async Task SendAsync(Notification notification)
         {
-            await Task.Yield();
+            if (connectedClientManager.IsClientConected)
+                await Task.Yield();
+            else
+                notificationPersister.AddNotification(notification);
         }
     }
 }
