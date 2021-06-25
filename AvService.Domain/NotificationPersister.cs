@@ -12,5 +12,15 @@ namespace AvService.Domain
         {
             notifications.Add(notification);
         }
+
+        public IEnumerable<Notification> GetNotifications()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RemoveNotification(Notification notification)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

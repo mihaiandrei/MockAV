@@ -4,7 +4,7 @@
     {
         bool IsClientConected { get; }
 
-        void Connect();
+        bool Connect();
         void Disconect();
     }
 }

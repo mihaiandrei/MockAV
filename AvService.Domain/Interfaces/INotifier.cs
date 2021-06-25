@@ -5,7 +5,7 @@ namespace AvService
 {
     public interface INotifier
     {
+        Task PushUnsentNotifications();
         Task SendAsync(Notification notification);
-        
     }
 }

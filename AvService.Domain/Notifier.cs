@@ -25,5 +25,18 @@ namespace AvService.Domain
             else
                 notificationPersister.AddNotification(notification);
         }
+
+        public async Task PushUnsentNotifications()
+        {
+            if (!connectedClientManager.IsClientConected)
+                return;
+
+            var unsentNotifications = notificationPersister.GetNotifications();
+            foreach (var notification in unsentNotifications)
+            {
+                await scanHub.SendMessage(notification);
+                notificationPersister.RemoveNotification(notification);
+            }
+        }
     }
 }
