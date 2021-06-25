@@ -7,18 +7,21 @@ namespace AvService.Domain
     {
         private readonly IConnectedClientManager connectedClientManager;
         private readonly INotificationPersister notificationPersister;
+        private readonly IScanHub scanHub;
 
-        public Notifier(IConnectedClientManager connectedClientManager,
+        public Notifier(IScanHub scanHub,
+                        IConnectedClientManager connectedClientManager,
                         INotificationPersister notificationPersister)
         {
             this.connectedClientManager = connectedClientManager;
             this.notificationPersister = notificationPersister;
+            this.scanHub = scanHub;
         }
 
         public async Task SendAsync(Notification notification)
         {
             if (connectedClientManager.IsClientConected)
-                await Task.Yield();
+                await scanHub.SendMessage(notification);
             else
                 notificationPersister.AddNotification(notification);
         }
