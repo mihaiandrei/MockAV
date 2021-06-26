@@ -47,5 +47,10 @@ namespace AVClient
         {
             await avServiceClient.DisableRealTimeScan();
         }
+
+        private async void RequestUnsentNotifications_Click(object sender, RoutedEventArgs e)
+        {
+            await avServiceClient.PublishUnsentNotifications();
+        }
     }
 }

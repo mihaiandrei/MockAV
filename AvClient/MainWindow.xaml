@@ -18,6 +18,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -32,6 +33,9 @@
 
             <Button x:Name="EnableRealtimeScanButton" Content="Enable Realtime Scan" Grid.Row="2" Grid.Column="0" Click="EnableRealtimeScanButton_Click"/>
             <Button x:Name="DisablRealtimeScanButton" Content="Disable Realtime Scan" Grid.Row="2" Grid.Column="1" Click="DisablRealtimeScanButton_Click"/>
+
+            <Button x:Name="RequestUnsentNotifications" Content="Request Unsent Notifications" Grid.Row="3" Click="RequestUnsentNotifications_Click"/>
+
         </Grid>
     </Grid>
 </Window>

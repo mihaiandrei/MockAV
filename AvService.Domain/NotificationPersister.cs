@@ -1,5 +1,6 @@
 ﻿using AvService.Domain.Notifications;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AvService.Domain
 {
@@ -15,12 +16,12 @@ namespace AvService.Domain
 
         public IEnumerable<Notification> GetNotifications()
         {
-            throw new System.NotImplementedException();
+            return notifications.ToList();
         }
 
         public void RemoveNotification(Notification notification)
         {
-            throw new System.NotImplementedException();
+            notifications.Remove(notification);
         }
     }
 }
