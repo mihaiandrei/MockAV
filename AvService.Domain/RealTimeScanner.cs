@@ -15,7 +15,7 @@ namespace AvService.Domain
         {
             this.notifier = notifier;
             timer = new Timer();
-            timer.Interval = 5000;
+            timer.Interval = 50000;
 
             timer.Elapsed += Timer_Elapsed;
             timer.Enabled = true;

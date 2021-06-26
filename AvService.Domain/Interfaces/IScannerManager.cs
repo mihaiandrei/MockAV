@@ -6,5 +6,7 @@ namespace AvService
     {
         Task<bool> StartOnDemandScanAsync();
         void StopOnDemandScan();
+
+        Task PublishUnsentNotifications();
     }
 }

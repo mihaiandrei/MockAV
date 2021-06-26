@@ -1,13 +1,63 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AvService.Domain;
+using AvService.Domain.Notifications;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace AvService
 {
-    public class ScanHub : Hub
+    public class ScanHub : Hub<IScanHubClient>, IServerScanHub
     {
-        public async Task SendMessage(string message)
+        private readonly IScannerManager scannerManager;
+        private readonly IRealTimeScanner realTimeScanner;
+        private readonly IConnectedClientManager connectedClientManager;
+
+        public ScanHub(IScannerManager scannerManager,
+            IRealTimeScanner realTimeScanner,
+            IConnectedClientManager connectedClientManager)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message);
+            this.scannerManager = scannerManager;
+            this.realTimeScanner = realTimeScanner;
+            this.connectedClientManager = connectedClientManager;
+        }
+
+        public async Task SendMessage(Notification notification)
+        {
+            await Clients.All.SendAsync(notification);
+        }
+
+        public async Task StartOnDemandScanAsync()
+        {
+            await scannerManager.StartOnDemandScanAsync();
+        }
+
+        public async Task PublishUnsentNotifications()
+        {
+            await scannerManager.PublishUnsentNotifications();
+        }
+
+        public void StopOnDemandScan()
+        {
+            scannerManager.StopOnDemandScan();
+        }
+
+        public void EnableRealTimeScan()
+        {
+            realTimeScanner.EnableRealTimeScan();
+        }
+
+        public void DisableRealTimeScan()
+        {
+            realTimeScanner.DisableRealTimeScan();
+        }
+
+        public void Connect()
+        {
+            connectedClientManager.Connect();
+        }
+
+        public void Disconect()
+        {
+            connectedClientManager.Disconect();
         }
     }
 }

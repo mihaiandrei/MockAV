@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace AVClient
 {
@@ -10,62 +7,43 @@ namespace AVClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        HubConnection connection;
+        AvServiceClient avServiceClient;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            connection = new HubConnectionBuilder()
-                .WithAutomaticReconnect()
-                .WithUrl("http://localhost:5000/scanhub")
-                .Build();
+            avServiceClient = new AvServiceClient(new NotificationsReceiver());
         }
 
         private async void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            connection.On<string>("ReceiveMessage", (message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    //messagesList.Items.Add(newMessage);
-                });
-            });
-
-            try
-            {
-                await connection.StartAsync();
-                //  messagesList.Items.Add("Connection started");
-            }
-            catch (Exception ex)
-            {
-                // messagesList.Items.Add(ex.Message);
-            }
+            await avServiceClient.Connect();
         }
 
-        private void DisconnectButton_Click(object sender, RoutedEventArgs e)
+        private async void DisconnectButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await avServiceClient.Disconect();
         }
 
         private async void StartOnDemandButton_Click(object sender, RoutedEventArgs e)
         {
-            await connection.InvokeAsync("SendMessage", "message");
+            await avServiceClient.StartOnDemandScanAsync();
         }
 
-        private void StopOnDemandButton_Click(object sender, RoutedEventArgs e)
+        private async void StopOnDemandButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await avServiceClient.StopOnDemandScan();
         }
 
-        private void EnableRealtimeScanButton_Click(object sender, RoutedEventArgs e)
+        private async void EnableRealtimeScanButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await avServiceClient.EnableRealTimeScan();
         }
 
-        private void DisablRealtimeScanButton_Click(object sender, RoutedEventArgs e)
+        private async void DisablRealtimeScanButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await avServiceClient.DisableRealTimeScan();
         }
     }
 }

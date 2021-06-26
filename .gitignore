@@ -14,3 +14,5 @@
 /AvService.Domain.Test/obj
 /AvService.Domain/obj
 /AvService.Domain/bin/Debug/netcoreapp3.1
+/AvService.Shared/bin/Debug/netcoreapp3.1
+/AvService.Shared/obj

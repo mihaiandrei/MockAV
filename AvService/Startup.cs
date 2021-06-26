@@ -1,3 +1,4 @@
+using AvService.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,14 @@ namespace AvService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IScannerManager, ScannerManager>();
+            services.AddSingleton<IRealTimeScanner, RealTimeScanner>();
+            services.AddSingleton<IConnectedClientManager, ConnectedClientManager>();
+            services.AddSingleton<INotificationPersister, NotificationPersister>();
+            services.AddSingleton<INotifier, Notifier>();
+            services.AddSingleton<IScanner, Scanner>();
+            services.AddSingleton<IScanHub, ContextHolder>(); 
+
             services.AddSignalR();
         }
 

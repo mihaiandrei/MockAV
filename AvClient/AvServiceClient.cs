@@ -1,0 +1,65 @@
+﻿using AvService;
+using AvService.Domain.Notifications;
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading.Tasks;
+
+namespace AVClient
+{
+    public class AvServiceClient
+    {
+        HubConnection connection;
+        private readonly INotificationsReceiver notificationsReceiver;
+
+        public AvServiceClient(INotificationsReceiver notificationsReceiver)
+        {
+            this.notificationsReceiver = notificationsReceiver;
+
+            connection = new HubConnectionBuilder()
+                               .WithAutomaticReconnect()
+                               .WithUrl("http://localhost:5000/scanhub")
+                               .Build();
+
+            connection.On<Notification>(nameof(IScanHubClient.SendAsync), (notification) =>
+            {
+                notificationsReceiver?.ReceiveNotification(notification);
+            });
+        }
+
+        public async Task Connect()
+        {
+            await connection.StartAsync();
+            await connection.InvokeAsync(nameof(IServerScanHub.Connect));
+        }
+
+        public async Task DisableRealTimeScan()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.DisableRealTimeScan));
+        }
+
+        public async Task Disconect()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.Disconect));
+            await connection.StopAsync();
+        }
+
+        public async Task EnableRealTimeScan()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.EnableRealTimeScan));
+        }
+
+        public async Task PublishUnsentNotifications()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.PublishUnsentNotifications));
+        }
+
+        public async Task StartOnDemandScanAsync()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.StartOnDemandScanAsync));
+        }
+
+        public async Task StopOnDemandScan()
+        {
+            await connection.InvokeAsync(nameof(IServerScanHub.StopOnDemandScan));
+        }
+    }
+}
