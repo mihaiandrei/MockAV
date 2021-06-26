@@ -22,11 +22,12 @@ namespace AvService.Domain
 
         }
 
-        public async Task<bool> StartOnDemandScanAsync()
+        public async Task StartOnDemandScanAsync()
         {
             if (scanInProgress)
             {
-                return false;
+                await notifier.SendAsync(new ScanInProgressNotification());
+                return;
             }
             else
             {
@@ -37,7 +38,6 @@ namespace AvService.Domain
                 await notifier.SendAsync(new StartScanOnDemandNotification());
                 Scan();
             }
-            return true;
         }
 
         public void StopOnDemandScan()

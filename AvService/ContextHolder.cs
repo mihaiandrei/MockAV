@@ -17,20 +17,24 @@ namespace AvService
         {
             switch (notification)
             {
-                case StartScanOnDemandNotification notification1:
-                    await hubContext.Clients.All.SendStartScanOnDemandNotification(notification1);
+                case StartScanOnDemandNotification n:
+                    await hubContext.Clients.All.SendStartScanOnDemandNotification(n);
                     break;
 
-                case StopScanSuccessNotification notification1:
-                    await hubContext.Clients.All.SendStopScanSuccessNotification(notification1);
+                case StopScanSuccessNotification n:
+                    await hubContext.Clients.All.SendStopScanSuccessNotification(n);
                     break;
 
-                case StopScanOnDemandNotification notification1:
-                    await hubContext.Clients.All.SendStopScanOnDemandNotification(notification1);
+                case ScanInProgressNotification n:
+                    await hubContext.Clients.All.SendScanInProgressNotification(n);
                     break;
 
-                case ThreatFoundNotification notification1:
-                    await hubContext.Clients.All.SendThreatFoundNotification(notification1);
+                case StopScanOnDemandNotification n:
+                    await hubContext.Clients.All.SendStopScanOnDemandNotification(n);
+                    break;
+
+                case ThreatFoundNotification n:
+                    await hubContext.Clients.All.SendThreatFoundNotification(n);
                     break;
 
             }

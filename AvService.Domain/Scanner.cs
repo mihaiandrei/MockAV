@@ -14,8 +14,12 @@ namespace AvService.Domain
             var random = new Random();
             var scanDuration = random.Next(10, 30);
 
-
-            await Task.Delay(TimeSpan.FromSeconds(scanDuration), cancellationToken);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(scanDuration), cancellationToken);
+            }
+            catch(TaskCanceledException)
+            { }
             var threatNumber = random.Next(0, 3);
 
             return Enumerable.Range(0, threatNumber)

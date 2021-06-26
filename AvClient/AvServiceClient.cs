@@ -38,6 +38,11 @@ namespace AVClient
             {
                 notificationsReceiver?.ReceiveNotification(notification);
             });
+
+            connection.On<ScanInProgressNotification>(nameof(IScanHubClient.SendScanInProgressNotification), notification =>
+            {
+                notificationsReceiver?.ReceiveNotification(notification);
+            });
         }
 
         public async Task Connect()

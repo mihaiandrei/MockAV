@@ -10,10 +10,13 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" x:Name="OutputListBox"/>
-        <Grid Grid.Row="1">
+        <ListBox Grid.Row="0" x:Name="LogsListBox"/>
+        <ListBox Grid.Row="1" x:Name="NotificationListBox"/>
+        
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -25,6 +28,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
             <Button x:Name="ConnectButton" Content="Connect" Grid.Row="0" Grid.Column="0" Click="ConnectButton_Click"/>
             <Button x:Name="DisconnectButton" Content="Disconnect" Grid.Row="0" Grid.Column="1" Click="DisconnectButton_Click"/>
 

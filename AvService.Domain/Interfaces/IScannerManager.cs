@@ -4,7 +4,7 @@ namespace AvService
 {
     public interface IScannerManager
     {
-        Task<bool> StartOnDemandScanAsync();
+        Task StartOnDemandScanAsync();
         void StopOnDemandScan();
 
         Task PublishUnsentNotifications();

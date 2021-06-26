@@ -1,5 +1,4 @@
 ﻿using AvService.Domain.Notifications;
-using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace AVClient
