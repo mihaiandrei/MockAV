@@ -1,4 +1,5 @@
 ﻿using AvService.Domain.Notifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
@@ -9,7 +10,6 @@ namespace AvService.Domain
     {
         private INotifier notifier;
         Timer timer;
-
 
         public RealTimeScanner(INotifier notifier)
         {
@@ -23,8 +23,18 @@ namespace AvService.Domain
 
         private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            IEnumerable<InfectedObject> infectedItems = Enumerable.Empty<InfectedObject>();
-            await notifier.SendAsync(new ThreatFoundNotification(infectedItems));
+            var random = new Random();
+            var threatNumber = random.Next(0, 3);
+
+            IEnumerable<InfectedObject> infectedItems = Enumerable.Range(0, threatNumber)
+               .Select(i => new InfectedObject
+               {
+                   ThreatName = $"Threat {i}",
+                   FilePath = $"C:\\file {i}"
+               });
+
+            if (infectedItems.Any())
+                await notifier.SendAsync(new ThreatFoundNotification(infectedItems));
         }
 
         public void EnableRealTimeScan()

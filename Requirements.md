@@ -46,7 +46,9 @@ Un obiect infectat are următoarele două atribute: cale fișier și nume threat
 
 ## Client not connected
 Consum a evenimentelor generate de produs în perioada în care nici un client nu era conectat/înregistrat.
+
 Practic se va implementa un mecanism de persistență și atât timp cât niciun client nu este conectat/înregistrat la produs prin intermediul API-ului orice eveniment generat de produs va fi salvat pentru a fi consumat mai târziu.
+
 În API-uri vom avea nevoie de o metodă prin care un client va cere să primească evenimentele salvate, dacă există.
 
 # Non functional requirements

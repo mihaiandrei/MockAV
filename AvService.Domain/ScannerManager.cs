@@ -40,6 +40,16 @@ namespace AvService.Domain
             return true;
         }
 
+        public void StopOnDemandScan()
+        {
+            source.Cancel();
+        }
+
+        public async Task PublishUnsentNotifications()
+        {
+            await notifier.PushUnsentNotifications();
+        }
+
         private async Task Scan()
         {
             var infectedItems = await scanner.ScanAsync(cancellationToken);
@@ -53,11 +63,5 @@ namespace AvService.Domain
 
             scanInProgress = false;
         }
-
-        public void StopOnDemandScan()
-        {
-            source.Cancel();
-        }
-
     }
 }
