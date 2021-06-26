@@ -36,19 +36,18 @@ Evenimentul va conține data și ora evenimentului și motivul pentru care s-a �
 În cazul în care scanarea se termină normal, a terminat de scanat tot ce era de scanat, se va genera un eveniment ce va raporta data și ora evenimentului și motivul pt care s-a încheiat scanarea.
 În acest caz motivul este scanare încheiată cu success.
 
-### Threat found
-În cazul în care sunt găsite obiecte infectate, la finalul scanării se va genera un eveniment ce va conține lista de obiecte găsite infectate.
-Un obiect infectat are următoarele două atribute: cale fișier și nume threat.
-
 Implementarea mock a scanării on demand poate fi descrisă astfel:
 - Nici o scanare nu va continua infinit. Fiecare scanare va rula un timp maxim de secunde, un random între 10 și 30.
 - Unele scanări pot raporta multiple infecții altele nici una.
+
+### Threat found
+În cazul în care sunt găsite obiecte infectate, la finalul scanării se va genera un eveniment ce va conține lista de obiecte găsite infectate.
+Un obiect infectat are următoarele două atribute: cale fișier și nume threat.
 
 ## Client not connected
 Consum a evenimentelor generate de produs în perioada în care nici un client nu era conectat/înregistrat.
 Practic se va implementa un mecanism de persistență și atât timp cât niciun client nu este conectat/înregistrat la produs prin intermediul API-ului orice eveniment generat de produs va fi salvat pentru a fi consumat mai târziu.
 În API-uri vom avea nevoie de o metodă prin care un client va cere să primească evenimentele salvate, dacă există.
-
 
 # Non functional requirements
 - Evenimentele de detecție vor fi expuse via API-uri iar un integrator va putea consuma aceste evenimente.

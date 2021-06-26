@@ -1,4 +1,5 @@
 using AvService.Domain.Notifications;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,15 +44,12 @@ namespace AvService.Domain
         {
             var infectedItems = await scanner.ScanAsync(cancellationToken);
             if (cancellationToken.IsCancellationRequested)
-            {
                 await notifier.SendAsync(new StopScanOnDemandNotification());
-            }
             else
-            {
                 await notifier.SendAsync(new StopScanSuccessNotification());
-            }
 
-            await notifier.SendAsync(new ThreatFoundNotification(infectedItems));
+            if (infectedItems.Any())
+                await notifier.SendAsync(new ThreatFoundNotification(infectedItems));
 
             scanInProgress = false;
         }

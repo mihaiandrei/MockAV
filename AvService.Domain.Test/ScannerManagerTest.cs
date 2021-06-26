@@ -70,5 +70,23 @@ namespace AvService.Domain.Test
             await scannerManager.StartOnDemandScanAsync();
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StopScanSuccessNotification>()));
         }
+
+        [Test]
+        public async Task WhenInfectedObjectAreFoundThenAThreatFoundNotificationIsSent()
+        {
+            scannerMock.Setup(s => s.ScanAsync(It.IsAny<CancellationToken>())).ReturnsAsync(() => new[] { new InfectedObject() });
+
+            await scannerManager.StartOnDemandScanAsync();
+            notifierMock.Verify(n => n.SendAsync(It.IsAny<ThreatFoundNotification>()));
+        }
+
+        [Test]
+        public async Task WhenInfectedObjectAreNotFoundThenAThreatFoundNotificationIsNotSent()
+        {
+            scannerMock.Setup(s => s.ScanAsync(It.IsAny<CancellationToken>())).ReturnsAsync(() => Enumerable.Empty<InfectedObject>());
+
+            await scannerManager.StartOnDemandScanAsync();
+            notifierMock.Verify(n => n.SendAsync(It.IsAny<ThreatFoundNotification>()), Times.Never);
+        }
     }
 }

@@ -12,11 +12,17 @@ namespace AvService.Domain
         {
 
             var random = new Random();
-            var scanDuration = random.Next(0, 3);
+            var scanDuration = random.Next(10, 30);
 
             await Task.Delay(scanDuration, cancellationToken);
+            var threatNumber = random.Next(0, 3);
 
-            return Enumerable.Empty<InfectedObject>();
+            return Enumerable.Range(0, threatNumber)
+               .Select(i => new InfectedObject
+               {
+                   ThreatName = $"Threat {i}",
+                   FilePath = $"C:\\file {i}"
+               });
         }
     }
 }
