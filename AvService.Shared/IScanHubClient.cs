@@ -5,6 +5,9 @@ namespace AvService
 {
     public interface IScanHubClient
     {
-        Task SendAsync(Notification notification);
+        Task SendStartScanOnDemandNotification(StartScanOnDemandNotification notification);
+        Task SendStopScanOnDemandNotification(StopScanOnDemandNotification notification);
+        Task SendStopScanSuccessNotification(StopScanSuccessNotification notification);
+        Task SendThreatFoundNotification(ThreatFoundNotification notification);
     }
 }

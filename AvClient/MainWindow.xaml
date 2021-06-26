@@ -10,20 +10,28 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="ConnectButton" Content="Connect" Grid.Row="0" Grid.Column="0" Click="ConnectButton_Click"/>
-        <Button x:Name="DisconnectButton" Content="Disconnect" Grid.Row="0" Grid.Column="1" Click="DisconnectButton_Click"/>
+        <ListBox Grid.Row="0" x:Name="OutputListBox"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <Button x:Name="StartOnDemandButton" Content="Start Scan" Grid.Row="1" Grid.Column="0" Click="StartOnDemandButton_Click"/>
-        <Button x:Name="StopOnDemandButton" Content="Stop Scan" Grid.Row="1" Grid.Column="1" Click="StopOnDemandButton_Click"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="ConnectButton" Content="Connect" Grid.Row="0" Grid.Column="0" Click="ConnectButton_Click"/>
+            <Button x:Name="DisconnectButton" Content="Disconnect" Grid.Row="0" Grid.Column="1" Click="DisconnectButton_Click"/>
 
-        <Button x:Name="EnableRealtimeScanButton" Content="Enable Realtime Scan" Grid.Row="2" Grid.Column="0" Click="EnableRealtimeScanButton_Click"/>
-        <Button x:Name="DisablRealtimeScanButton" Content="Disable Realtime Scan" Grid.Row="2" Grid.Column="1" Click="DisablRealtimeScanButton_Click"/>
+            <Button x:Name="StartOnDemandButton" Content="Start Scan" Grid.Row="1" Grid.Column="0" Click="StartOnDemandButton_Click"/>
+            <Button x:Name="StopOnDemandButton" Content="Stop Scan" Grid.Row="1" Grid.Column="1" Click="StopOnDemandButton_Click"/>
+
+            <Button x:Name="EnableRealtimeScanButton" Content="Enable Realtime Scan" Grid.Row="2" Grid.Column="0" Click="EnableRealtimeScanButton_Click"/>
+            <Button x:Name="DisablRealtimeScanButton" Content="Disable Realtime Scan" Grid.Row="2" Grid.Column="1" Click="DisablRealtimeScanButton_Click"/>
+        </Grid>
     </Grid>
 </Window>

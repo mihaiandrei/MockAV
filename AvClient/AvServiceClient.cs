@@ -19,7 +19,22 @@ namespace AVClient
                                .WithUrl("http://localhost:5000/scanhub")
                                .Build();
 
-            connection.On<Notification>(nameof(IScanHubClient.SendAsync), (notification) =>
+            connection.On<StartScanOnDemandNotification>(nameof(IScanHubClient.SendStartScanOnDemandNotification), notification =>
+            {
+                notificationsReceiver?.ReceiveNotification(notification);
+            });
+
+            connection.On<StopScanSuccessNotification>(nameof(IScanHubClient.SendStopScanSuccessNotification), notification =>
+            {
+                notificationsReceiver?.ReceiveNotification(notification);
+            });
+
+            connection.On<StopScanOnDemandNotification>(nameof(IScanHubClient.SendStopScanOnDemandNotification), notification =>
+            {
+                notificationsReceiver?.ReceiveNotification(notification);
+            });
+
+            connection.On<ThreatFoundNotification>(nameof(IScanHubClient.SendThreatFoundNotification), notification =>
             {
                 notificationsReceiver?.ReceiveNotification(notification);
             });

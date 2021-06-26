@@ -1,13 +1,21 @@
 ﻿using AvService.Domain.Notifications;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace AVClient
 {
     public class NotificationsReceiver : INotificationsReceiver
     {
-        public void ReceiveNotification(Notification notification)
-        {
+        ListBox listBox;
 
+        public NotificationsReceiver(ListBox listBox)
+        {
+            this.listBox = listBox;
         }
 
+        public void ReceiveNotification(Notification notification)
+        {
+            listBox.Items.Add($"{notification.GetType().Name} -  {notification.NotificationTime}");
+        }
     }
 }

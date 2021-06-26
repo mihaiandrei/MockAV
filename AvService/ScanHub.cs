@@ -20,11 +20,6 @@ namespace AvService
             this.connectedClientManager = connectedClientManager;
         }
 
-        public async Task SendMessage(Notification notification)
-        {
-            await Clients.All.SendAsync(notification);
-        }
-
         public async Task StartOnDemandScanAsync()
         {
             await scannerManager.StartOnDemandScanAsync();

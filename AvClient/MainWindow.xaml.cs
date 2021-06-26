@@ -9,11 +9,13 @@ namespace AVClient
     {
         AvServiceClient avServiceClient;
 
+        public NotificationsReceiver NotificationsReceiver { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-
-            avServiceClient = new AvServiceClient(new NotificationsReceiver());
+            NotificationsReceiver = new NotificationsReceiver(OutputListBox);
+            avServiceClient = new AvServiceClient(NotificationsReceiver);
         }
 
         private async void ConnectButton_Click(object sender, RoutedEventArgs e)
