@@ -2,7 +2,7 @@
 
 namespace AvService
 {
-    public interface IServerScanHub
+    public interface IScanHubServer
     {
         void Connect();
         void Disconect();

@@ -88,9 +88,12 @@ namespace AvService.Domain
             timer.Enabled = false;
         }
 
-        public bool Connect(string connectionId)
+        public async Task Connect(string connectionId)
         {
-            return connectedClientManager.Connect(connectionId);
+            var successfullyConnected = connectedClientManager.Connect(connectionId);
+
+            if (!successfullyConnected)
+                await notifier.DisconectClient(connectionId);
         }
         public void Disconect(string connectionId)
         {

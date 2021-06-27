@@ -43,43 +43,48 @@ namespace AVClient
             {
                 notificationsReceiver?.ReceiveNotification(notification);
             });
+
+            connection.On(nameof(IScanHubClient.DisconnectClient), async () =>
+             {
+                 await connection.StopAsync();
+             });
         }
 
         public async Task Connect()
         {
             await connection.StartAsync();
-            await connection.InvokeAsync(nameof(IServerScanHub.Connect));
+            await connection.InvokeAsync(nameof(IScanHubServer.Connect));
         }
 
         public async Task DisableRealTimeScan()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.DisableRealTimeScan));
+            await connection.InvokeAsync(nameof(IScanHubServer.DisableRealTimeScan));
         }
 
         public async Task Disconect()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.Disconect));
+            await connection.InvokeAsync(nameof(IScanHubServer.Disconect));
             await connection.StopAsync();
         }
 
         public async Task EnableRealTimeScan()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.EnableRealTimeScan));
+            await connection.InvokeAsync(nameof(IScanHubServer.EnableRealTimeScan));
         }
 
         public async Task PublishUnsentNotifications()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.PublishUnsentNotifications));
+            await connection.InvokeAsync(nameof(IScanHubServer.PublishUnsentNotifications));
         }
 
         public async Task StartOnDemandScanAsync()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.StartOnDemandScanAsync));
+            await connection.InvokeAsync(nameof(IScanHubServer.StartOnDemandScanAsync));
         }
 
         public async Task StopOnDemandScan()
         {
-            await connection.InvokeAsync(nameof(IServerScanHub.StopOnDemandScan));
+            await connection.InvokeAsync(nameof(IScanHubServer.StopOnDemandScan));
         }
     }
 }

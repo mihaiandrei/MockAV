@@ -4,7 +4,6 @@
     {
         public string ConnectionId { get; private set; }
         public bool IsClientConected => !string.IsNullOrEmpty(ConnectionId);
-
         
         public bool Connect(string connectionId)
         {

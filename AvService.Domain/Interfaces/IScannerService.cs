@@ -9,7 +9,7 @@ namespace AvService
         void DisableRealTimeScan(string connectionId);
         void EnableRealTimeScan(string connectionId);
         Task PublishUnsentNotifications(string connectionId);
-        bool Connect(string connectionId);
+        Task Connect(string connectionId);
         void Disconect(string connectionId);
     }
 }

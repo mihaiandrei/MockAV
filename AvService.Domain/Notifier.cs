@@ -21,7 +21,7 @@ namespace AvService.Domain
         public async Task SendAsync(Notification notification)
         {
             if (connectedClientManager.IsClientConected)
-                await scanHub.SendMessage(notification, connectedClientManager.ConnectionId);
+                await scanHub.SendNotification(notification, connectedClientManager.ConnectionId);
             else
                 notificationPersister.AddNotification(notification);
         }
@@ -34,9 +34,14 @@ namespace AvService.Domain
             var unsentNotifications = notificationPersister.GetNotifications();
             foreach (var notification in unsentNotifications)
             {
-                await scanHub.SendMessage(notification, connectedClientManager.ConnectionId);
+                await scanHub.SendNotification(notification, connectedClientManager.ConnectionId);
                 notificationPersister.RemoveNotification(notification);
             }
+        }
+
+        public async Task DisconectClient(string connectionId)
+        {
+            await scanHub.DisconnectClient(connectionId);
         }
     }
 }

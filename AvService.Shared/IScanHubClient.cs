@@ -10,5 +10,6 @@ namespace AvService
         Task SendStopScanSuccessNotification(StopScanSuccessNotification notification);
         Task SendThreatFoundNotification(ThreatFoundNotification notification);
         Task SendScanInProgressNotification(ScanInProgressNotification notification);
+        Task DisconnectClient();
     }
 }

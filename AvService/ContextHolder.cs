@@ -13,7 +13,8 @@ namespace AvService
         {
             this.hubContext = hubContext;
         }
-        public async Task SendMessage(Notification notification, string connectionId)
+
+        public async Task SendNotification(Notification notification, string connectionId)
         {
             switch (notification)
             {
@@ -36,8 +37,12 @@ namespace AvService
                 case ThreatFoundNotification n:
                     await hubContext.Clients.Clients(connectionId).SendThreatFoundNotification(n);
                     break;
-
             }
+        }
+
+        public async Task DisconnectClient(string connectionId)
+        {
+            await hubContext.Clients.Clients(connectionId).DisconnectClient();
         }
     }
 }

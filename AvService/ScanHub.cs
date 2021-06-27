@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AvService
 {
-    public class ScanHub : Hub<IScanHubClient>, IServerScanHub
+    public class ScanHub : Hub<IScanHubClient>, IScanHubServer
     {
         private readonly IScannerService scannerService;
 

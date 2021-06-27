@@ -5,6 +5,7 @@ namespace AvService.Domain
 {
     public interface IScanHub
     {
-        Task SendMessage(Notification notification, string connectionId);
+        Task SendNotification(Notification notification, string connectionId);
+        Task DisconnectClient(string connectionId);
     }
 }

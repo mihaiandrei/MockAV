@@ -7,5 +7,6 @@ namespace AvService
     {
         Task PushUnsentNotifications();
         Task SendAsync(Notification notification);
+        Task DisconectClient(string connectionId);
     }
 }
