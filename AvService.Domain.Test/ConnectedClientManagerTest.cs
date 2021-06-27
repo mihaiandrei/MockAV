@@ -15,16 +15,16 @@ namespace AvService.Domain.Test
         [Test]
         public void WhenAClientIsConnectedThenNoOtherClientsCanConnect()
         {
-            connectedClientManager.Connect();
-            Assert.IsFalse(connectedClientManager.Connect());
+            connectedClientManager.Connect("connectionId");
+            Assert.IsFalse(connectedClientManager.Connect("newconnectionId"));
         }
 
         [Test]
         public void WhenAClientIDisconnectsThenOtherClientsCanConnect()
         {
-            connectedClientManager.Connect();
-            connectedClientManager.Disconect();
-            Assert.IsTrue(connectedClientManager.Connect());
+            connectedClientManager.Connect("connectionId");
+            connectedClientManager.Disconect("connectionId");
+            Assert.IsTrue(connectedClientManager.Connect("newConnectionId"));
         }
     }
 }

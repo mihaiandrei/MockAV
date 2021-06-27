@@ -3,8 +3,9 @@
     public interface IConnectedClientManager
     {
         bool IsClientConected { get; }
-
-        bool Connect();
-        void Disconect();
+        string ConnectionId { get; }
+        bool Connect(string connectionId);
+        void Disconect(string connectionId);
+        bool ValidateConnection(string connectionId);
     }
 }

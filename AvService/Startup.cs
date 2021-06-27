@@ -13,13 +13,12 @@ namespace AvService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IScannerManager, ScannerManager>();
-            services.AddSingleton<IRealTimeScanner, RealTimeScanner>();
+            services.AddSingleton<IScannerService, ScannerService>();
             services.AddSingleton<IConnectedClientManager, ConnectedClientManager>();
-            services.AddSingleton<INotificationPersister, NotificationPersister>();
+            services.AddSingleton<INotificationRepository, NotificationRepository>();
             services.AddSingleton<INotifier, Notifier>();
             services.AddSingleton<IScanner, Scanner>();
-            services.AddSingleton<IScanHub, ContextHolder>(); 
+            services.AddSingleton<IScanHub, ContextHolder>();
 
             services.AddSignalR();
         }

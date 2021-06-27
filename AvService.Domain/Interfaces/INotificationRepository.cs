@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AvService.Domain
 {
-    public interface INotificationPersister
+    public interface INotificationRepository
     {
         void AddNotification(Notification notification);
         void RemoveNotification(Notification notification);

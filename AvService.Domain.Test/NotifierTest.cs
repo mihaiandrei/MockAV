@@ -10,14 +10,14 @@ namespace AvService.Domain.Test
         Notifier notifier;
         Mock<IScanHub> scanHubMock;
         Mock<IConnectedClientManager> connectedClientManagerMock;
-        Mock<INotificationPersister> notificationPersisterMock;
+        Mock<INotificationRepository> notificationPersisterMock;
 
         [SetUp]
         public void Setup()
         {
             scanHubMock = new Mock<IScanHub>();
             connectedClientManagerMock = new Mock<IConnectedClientManager>();
-            notificationPersisterMock = new Mock<INotificationPersister>();
+            notificationPersisterMock = new Mock<INotificationRepository>();
 
             notifier = new Notifier(scanHubMock.Object, connectedClientManagerMock.Object, notificationPersisterMock.Object);
         }
@@ -27,7 +27,7 @@ namespace AvService.Domain.Test
         {
             connectedClientManagerMock.Setup(cc => cc.IsClientConected).Returns(true);
             await notifier.SendAsync(new Notification());
-            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>()));
+            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>(), It.IsAny<string>()));
             notificationPersisterMock.Verify(np => np.AddNotification(It.IsAny<Notification>()), Times.Never);
         }
 
@@ -36,7 +36,7 @@ namespace AvService.Domain.Test
         {
             connectedClientManagerMock.Setup(cc => cc.IsClientConected).Returns(false);
             await notifier.SendAsync(new Notification());
-            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>()), Times.Never);
+            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>(), It.IsAny<string>()), Times.Never);
             notificationPersisterMock.Verify(np => np.AddNotification(It.IsAny<Notification>()));
         }
 
@@ -45,7 +45,7 @@ namespace AvService.Domain.Test
         {
             connectedClientManagerMock.Setup(cc => cc.IsClientConected).Returns(false);
             await notifier.PushUnsentNotifications();
-            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>()), Times.Never);
+            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>(), It.IsAny<string>()), Times.Never);
             notificationPersisterMock.Verify(np => np.RemoveNotification(It.IsAny<Notification>()), Times.Never);
         }
 
@@ -56,7 +56,7 @@ namespace AvService.Domain.Test
 
             connectedClientManagerMock.Setup(cc => cc.IsClientConected).Returns(true);
             await notifier.PushUnsentNotifications();
-            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>()));
+            scanHubMock.Verify(sh => sh.SendMessage(It.IsAny<Notification>(), It.IsAny<string>()));
             notificationPersisterMock.Verify(np => np.RemoveNotification(It.IsAny<Notification>()));
         }
     }

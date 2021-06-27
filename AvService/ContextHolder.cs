@@ -13,28 +13,28 @@ namespace AvService
         {
             this.hubContext = hubContext;
         }
-        public async Task SendMessage(Notification notification)
+        public async Task SendMessage(Notification notification, string connectionId)
         {
             switch (notification)
             {
                 case StartScanOnDemandNotification n:
-                    await hubContext.Clients.All.SendStartScanOnDemandNotification(n);
+                    await hubContext.Clients.Clients(connectionId).SendStartScanOnDemandNotification(n);
                     break;
 
                 case StopScanSuccessNotification n:
-                    await hubContext.Clients.All.SendStopScanSuccessNotification(n);
+                    await hubContext.Clients.Clients(connectionId).SendStopScanSuccessNotification(n);
                     break;
 
                 case ScanInProgressNotification n:
-                    await hubContext.Clients.All.SendScanInProgressNotification(n);
+                    await hubContext.Clients.Clients(connectionId).SendScanInProgressNotification(n);
                     break;
 
                 case StopScanOnDemandNotification n:
-                    await hubContext.Clients.All.SendStopScanOnDemandNotification(n);
+                    await hubContext.Clients.Clients(connectionId).SendStopScanOnDemandNotification(n);
                     break;
 
                 case ThreatFoundNotification n:
-                    await hubContext.Clients.All.SendThreatFoundNotification(n);
+                    await hubContext.Clients.Clients(connectionId).SendThreatFoundNotification(n);
                     break;
 
             }

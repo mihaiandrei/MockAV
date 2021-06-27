@@ -1,57 +1,50 @@
-﻿using AvService.Domain;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace AvService
 {
     public class ScanHub : Hub<IScanHubClient>, IServerScanHub
     {
-        private readonly IScannerManager scannerManager;
-        private readonly IRealTimeScanner realTimeScanner;
-        private readonly IConnectedClientManager connectedClientManager;
+        private readonly IScannerService scannerService;
 
-        public ScanHub(IScannerManager scannerManager,
-            IRealTimeScanner realTimeScanner,
-            IConnectedClientManager connectedClientManager)
+        public ScanHub(IScannerService scannerManager)
         {
-            this.scannerManager = scannerManager;
-            this.realTimeScanner = realTimeScanner;
-            this.connectedClientManager = connectedClientManager;
+            this.scannerService = scannerManager;
         }
 
         public async Task StartOnDemandScanAsync()
         {
-            await scannerManager.StartOnDemandScanAsync();
+            await scannerService.StartOnDemandScanAsync(Context.ConnectionId);
         }
 
         public async Task PublishUnsentNotifications()
         {
-            await scannerManager.PublishUnsentNotifications();
+            await scannerService.PublishUnsentNotifications(Context.ConnectionId);
         }
 
         public void StopOnDemandScan()
         {
-            scannerManager.StopOnDemandScan();
+            scannerService.StopOnDemandScan(Context.ConnectionId);
         }
 
         public void EnableRealTimeScan()
         {
-            realTimeScanner.EnableRealTimeScan();
+            scannerService.EnableRealTimeScan(Context.ConnectionId);
         }
 
         public void DisableRealTimeScan()
         {
-            realTimeScanner.DisableRealTimeScan();
+            scannerService.DisableRealTimeScan(Context.ConnectionId);
         }
 
         public void Connect()
         {
-            connectedClientManager.Connect();
+            scannerService.Connect(Context.ConnectionId);
         }
 
         public void Disconect()
         {
-            connectedClientManager.Disconect();
+            scannerService.Disconect(Context.ConnectionId);
         }
     }
 }

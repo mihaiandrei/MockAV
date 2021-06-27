@@ -11,26 +11,33 @@ namespace AvService.Domain.Test
     {
         Mock<IScanner> scannerMock;
         Mock<INotifier> notifierMock;
+        Mock<IConnectedClientManager> connectedClientManagerMock;
 
-        ScannerManager scannerManager;
+        ScannerService scannerManager;
+
+        string connectionId = "connectionId ";
 
         [SetUp]
         public void Setup()
         {
             scannerMock = new Mock<IScanner>();
             notifierMock = new Mock<INotifier>();
+            connectedClientManagerMock = new Mock<IConnectedClientManager>();
 
-            scannerManager = new ScannerManager(scannerMock.Object, notifierMock.Object);
+            scannerManager = new ScannerService(scannerMock.Object,
+                                                notifierMock.Object,
+                                                connectedClientManagerMock.Object);
+
+            connectedClientManagerMock.Setup(cm => cm.ValidateConnection(It.IsAny<string>())).Returns(true);
         }
-
 
         [Test]
         public async Task WhenAnOnDemandScanIsStartedThenANotificationIsSent()
         {
-            var scanStarted = await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StartScanOnDemandNotification>()));
             scannerMock.Verify(s => s.ScanAsync(It.IsAny<CancellationToken>()));
-            Assert.IsTrue(scanStarted);
+            notifierMock.Verify(n => n.SendAsync(It.IsAny<ScanInProgressNotification>()), Times.Never);
         }
 
         [Test]
@@ -42,12 +49,12 @@ namespace AvService.Domain.Test
                 return Enumerable.Empty<InfectedObject>();
             });
 
-            await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
 
-            var scanStarted = await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StartScanOnDemandNotification>()), Times.Once);
             scannerMock.Verify(s => s.ScanAsync(It.IsAny<CancellationToken>()), Times.Once);
-            Assert.IsFalse(scanStarted);
+            notifierMock.Verify(n => n.SendAsync(It.IsAny<ScanInProgressNotification>()));
         }
 
         [Test]
@@ -58,8 +65,8 @@ namespace AvService.Domain.Test
                 await Task.Delay(100);
                 return Enumerable.Empty<InfectedObject>();
             });
-            await scannerManager.StartOnDemandScanAsync();
-            scannerManager.StopOnDemandScan();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
+            scannerManager.StopOnDemandScan(connectionId);
             await Task.Delay(200);
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StopScanOnDemandNotification>()));
         }
@@ -67,7 +74,7 @@ namespace AvService.Domain.Test
         [Test]
         public async Task WhenAnOnDemandScanIsFinishedThenANotificationIsSent()
         {
-            await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
             notifierMock.Verify(n => n.SendAsync(It.IsAny<StopScanSuccessNotification>()));
         }
 
@@ -76,7 +83,7 @@ namespace AvService.Domain.Test
         {
             scannerMock.Setup(s => s.ScanAsync(It.IsAny<CancellationToken>())).ReturnsAsync(() => new[] { new InfectedObject() });
 
-            await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync(connectionId);
             notifierMock.Verify(n => n.SendAsync(It.IsAny<ThreatFoundNotification>()));
         }
 
@@ -85,7 +92,7 @@ namespace AvService.Domain.Test
         {
             scannerMock.Setup(s => s.ScanAsync(It.IsAny<CancellationToken>())).ReturnsAsync(() => Enumerable.Empty<InfectedObject>());
 
-            await scannerManager.StartOnDemandScanAsync();
+            await scannerManager.StartOnDemandScanAsync("connectionId");
             notifierMock.Verify(n => n.SendAsync(It.IsAny<ThreatFoundNotification>()), Times.Never);
         }
     }

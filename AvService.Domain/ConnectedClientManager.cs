@@ -2,20 +2,26 @@
 {
     public class ConnectedClientManager : IConnectedClientManager
     {
-        public bool IsClientConected { get; private set; }
-        public bool Connect()
+        public string ConnectionId { get; private set; }
+        public bool IsClientConected => !string.IsNullOrEmpty(ConnectionId);
+
+        
+        public bool Connect(string connectionId)
         {
             if (!IsClientConected)
             {
-                IsClientConected = true;
+                this.ConnectionId = connectionId;
                 return true;
             }
             return false;
         }
-
-        public void Disconect()
+        public void Disconect(string connectionId)
         {
-            IsClientConected = false;
+            this.ConnectionId = null;
+        }
+        public bool ValidateConnection(string connectionId)
+        {
+            return this.ConnectionId == connectionId;
         }
     }
 }
