@@ -2,6 +2,15 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+export interface IScanHubClient
+{
+	SendStartScanOnDemandNotification(notification: StartScanOnDemandNotification) : void;
+	SendStopScanOnDemandNotification(notification: StopScanOnDemandNotification) : void;
+	SendStopScanSuccessNotification(notification: StopScanSuccessNotification) : void;
+	SendThreatFoundNotification(notification: ThreatFoundNotification) : void;
+	SendScanInProgressNotification(notification: ScanInProgressNotification) : void;
+	DisconnectClient() : void;
+}
 export interface IScanHubServer
 {
 	Connect() : void;

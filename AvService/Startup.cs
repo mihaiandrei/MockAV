@@ -21,13 +21,6 @@ namespace AvService
             services.AddSingleton<IScanHub, ContextHolder>();
 
             services.AddSignalR();
-
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.WithOrigins("http://localhost:3000")
-                                                                .AllowAnyHeader()
-                                                                .AllowAnyMethod());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

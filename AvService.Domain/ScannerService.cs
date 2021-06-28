@@ -95,6 +95,7 @@ namespace AvService.Domain
             if (!successfullyConnected)
                 await notifier.DisconectClient(connectionId);
         }
+
         public void Disconect(string connectionId)
         {
             if (!connectedClientManager.ValidateConnection(connectionId))

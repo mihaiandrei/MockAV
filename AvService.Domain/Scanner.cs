@@ -21,6 +21,7 @@ namespace AvService.Domain
             }
             catch(TaskCanceledException)
             { }
+
             var threatNumber = random.Next(0, 3);
 
             return Enumerable.Range(0, threatNumber)

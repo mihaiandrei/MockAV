@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace AvService.Shared
 {
+    [TsInterface]
     public interface IScanHubClient
     {
         Task SendStartScanOnDemandNotification(StartScanOnDemandNotification notification);

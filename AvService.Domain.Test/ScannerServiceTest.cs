@@ -95,5 +95,25 @@ namespace AvService.Domain.Test
             await scannerManager.StartOnDemandScanAsync("connectionId");
             notifierMock.Verify(n => n.SendAsync(It.IsAny<ThreatFoundNotification>()), Times.Never);
         }
+
+        [Test]
+
+        public async Task WhenConnectIsDeniedTheClientIsAskedToDisconnect()
+        {
+
+            connectedClientManagerMock.Setup(cm => cm.Connect(It.IsAny<string>())).Returns(false);
+
+            await scannerManager.Connect("connectionId");
+
+            notifierMock.Verify(n => n.DisconectClient(It.IsAny<string>()));
+        }
+
+        [Test]
+        public void DisconnectWithADifferentConnectionIdWillNotDisconectClient()
+        {
+            connectedClientManagerMock.Setup(cm => cm.ValidateConnection(It.IsAny<string>())).Returns(false);
+            scannerManager.Disconect("connectionId");
+            connectedClientManagerMock.Verify(n => n.Disconect(It.IsAny<string>()), Times.Never);
+        }
     }
 }
