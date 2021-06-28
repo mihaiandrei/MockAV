@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Reinforced.Typings.Attributes;
+using System;
 
-namespace AvService.Domain.Notifications
+namespace AvService.Shared
 {
+    [TsClass]
     public class Notification
     {
         public Notification()

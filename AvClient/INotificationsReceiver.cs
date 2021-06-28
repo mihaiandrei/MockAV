@@ -1,4 +1,4 @@
-﻿using AvService.Domain.Notifications;
+﻿using AvService.Shared;
 
 namespace AVClient
 {

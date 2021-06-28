@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Reinforced.Typings.Attributes;
 
-namespace AvService.Domain.Notifications
+namespace AvService.Shared
 {
+    [TsClass]
     public class StopScanOnDemandNotification : StopScanNotification
     {
         public override string Reason => "Scan was forcibly stopped";

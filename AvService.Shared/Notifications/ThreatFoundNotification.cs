@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Reinforced.Typings.Attributes;
+using System.Collections.Generic;
 
-namespace AvService.Domain.Notifications
+namespace AvService.Shared
 {
+    [TsClass]
     public class ThreatFoundNotification : Notification
     {
         public ThreatFoundNotification(IEnumerable<InfectedObject> infectedObjects)

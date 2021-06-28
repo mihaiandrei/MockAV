@@ -1,4 +1,4 @@
-﻿using AvService.Domain.Notifications;
+﻿using AvService.Shared;
 using System.Threading.Tasks;
 
 namespace AvService.Domain

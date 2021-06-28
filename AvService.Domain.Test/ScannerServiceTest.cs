@@ -1,4 +1,4 @@
-using AvService.Domain.Notifications;
+using AvService.Shared;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AvService.Domain.Test
 {
-    public class ScannerManagerTests
+    public class ScannerServiceTest
     {
         Mock<IScanner> scannerMock;
         Mock<INotifier> notifierMock;

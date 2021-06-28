@@ -1,4 +1,4 @@
-﻿using AvService.Domain.Notifications;
+﻿using AvService.Shared;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,14 +13,14 @@ namespace AvService.Domain
             notifications.Add(notification);
         }
 
-        public IEnumerable<Notification> GetNotifications()
-        {
-            return notifications.ToList();
-        }
-
         public void RemoveNotification(Notification notification)
         {
             notifications.Remove(notification);
+        }
+
+        public IEnumerable<Notification> GetNotifications()
+        {
+            return notifications.ToList();
         }
     }
 }

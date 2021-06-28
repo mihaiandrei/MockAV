@@ -1,4 +1,4 @@
-﻿using AvService.Domain.Notifications;
+﻿using AvService.Shared;
 using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;

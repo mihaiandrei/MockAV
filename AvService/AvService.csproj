@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
+    <PackageReference Include="Reinforced.Typings" Version="1.5.9" />
   </ItemGroup>
 
   <ItemGroup>

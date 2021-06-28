@@ -1,17 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using Reinforced.Typings.Attributes;
+using System.Threading.Tasks;
 
-namespace AvService
+namespace AvService.Shared
 {
+    [TsInterface]
     public interface IScanHubServer
     {
         void Connect();
-        void Disconect();
+        void Disconnect();
 
         void DisableRealTimeScan();
         void EnableRealTimeScan();
 
-        Task StartOnDemandScanAsync();
+        Task StartOnDemandScan();
         void StopOnDemandScan();
+
         Task PublishUnsentNotifications();
     }
 }

@@ -1,5 +1,4 @@
-﻿using AvService;
-using AvService.Domain.Notifications;
+﻿using AvService.Shared;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 
@@ -9,6 +8,8 @@ namespace AVClient
     {
         HubConnection connection;
         private readonly INotificationsReceiver notificationsReceiver;
+
+        public bool IsConnected => connection?.State == HubConnectionState.Connected;
 
         public AvServiceClient(INotificationsReceiver notificationsReceiver)
         {
@@ -63,7 +64,7 @@ namespace AVClient
 
         public async Task Disconect()
         {
-            await connection.InvokeAsync(nameof(IScanHubServer.Disconect));
+            await connection.InvokeAsync(nameof(IScanHubServer.Disconnect));
             await connection.StopAsync();
         }
 
@@ -79,7 +80,7 @@ namespace AVClient
 
         public async Task StartOnDemandScanAsync()
         {
-            await connection.InvokeAsync(nameof(IScanHubServer.StartOnDemandScanAsync));
+            await connection.InvokeAsync(nameof(IScanHubServer.StartOnDemandScan));
         }
 
         public async Task StopOnDemandScan()

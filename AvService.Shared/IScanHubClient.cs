@@ -1,7 +1,7 @@
-﻿using AvService.Domain.Notifications;
+﻿using Reinforced.Typings.Attributes;
 using System.Threading.Tasks;
 
-namespace AvService
+namespace AvService.Shared
 {
     public interface IScanHubClient
     {

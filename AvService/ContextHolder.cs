@@ -1,5 +1,5 @@
 ﻿using AvService.Domain;
-using AvService.Domain.Notifications;
+using AvService.Shared;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 

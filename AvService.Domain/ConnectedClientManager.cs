@@ -4,7 +4,7 @@
     {
         public string ConnectionId { get; private set; }
         public bool IsClientConected => !string.IsNullOrEmpty(ConnectionId);
-        
+
         public bool Connect(string connectionId)
         {
             if (!IsClientConected)
@@ -16,7 +16,8 @@
         }
         public void Disconect(string connectionId)
         {
-            this.ConnectionId = null;
+            if (ConnectionId == connectionId)
+                this.ConnectionId = null;
         }
         public bool ValidateConnection(string connectionId)
         {

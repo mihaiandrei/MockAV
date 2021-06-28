@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AvService.Domain;
+using AvService.Shared;
+using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading.Tasks;
 
 namespace AvService
@@ -6,13 +9,16 @@ namespace AvService
     public class ScanHub : Hub<IScanHubClient>, IScanHubServer
     {
         private readonly IScannerService scannerService;
+        private readonly IConnectedClientManager connectedClientManager;
 
-        public ScanHub(IScannerService scannerManager)
+        public ScanHub(IScannerService scannerManager,
+                       IConnectedClientManager connectedClientManager)
         {
             this.scannerService = scannerManager;
+            this.connectedClientManager = connectedClientManager;
         }
 
-        public async Task StartOnDemandScanAsync()
+        public async Task StartOnDemandScan()
         {
             await scannerService.StartOnDemandScanAsync(Context.ConnectionId);
         }
@@ -42,9 +48,15 @@ namespace AvService
             scannerService.Connect(Context.ConnectionId);
         }
 
-        public void Disconect()
+        public void Disconnect()
         {
             scannerService.Disconect(Context.ConnectionId);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            connectedClientManager.Disconect(Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
