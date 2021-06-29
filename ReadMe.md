@@ -1,7 +1,7 @@
-#Build
+# Build
 The solution is develope using .Net 5.0 so make sure you have that installed
 
-#Run
+# Run
 To start the soluton select "Set Startup Projects" from Solution explorer and select "Mutiple startup project" 
 for AvService, AvClient, AvService.WebClient
 
