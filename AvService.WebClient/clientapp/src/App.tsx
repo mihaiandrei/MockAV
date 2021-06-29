@@ -6,25 +6,24 @@ import * as AvService from '../../../AvService.Shared/AvService.Shared';
 
 interface IState {
   hubConnection: signalR.HubConnection | null;
-  notifications: AvService.Notification[]
+  notifications: [AvService.Notification, string][]
 }
 
 class App extends Component<{}, IState> {
 
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
     this.state = { notifications: [], hubConnection: null };
   }
 
   render() {
-    const listItems = this.state.notifications.map((item: AvService.Notification) => {
-      return (<div>{item.NotificationTime}</div>
+    const listItems = this.state.notifications.map((item: [AvService.Notification, string]) => {
+      return (<div key={Math.random().toString(36).substr(2, 9)}>{JSON.stringify(item)}</div>
       )
     });
 
     return (
       <div className="App">
-        <div>{listItems}</div>
         <div>
           <button onClick={() => this.connect()}>Connect</button>
           <button onClick={() => this.disconnect()}>Disconnect</button>
@@ -36,8 +35,8 @@ class App extends Component<{}, IState> {
           <button onClick={() => this.stopOnDemandScan()}>Stop On Demand Scan</button>
 
           <button onClick={() => this.publishUnsentNotifications()}>Publish Unsent Notifications</button>
-
         </div>
+        <div>{listItems}</div>
       </div>
     );
   }
@@ -50,23 +49,23 @@ class App extends Component<{}, IState> {
       .build();
 
     connection.on('SendStartScanOnDemandNotification', (notification) => {
-      this.receiveNotification(notification);
+      this.receiveNotification(notification, 'SendStartScanOnDemandNotification');
     });
 
     connection.on('SendStopScanOnDemandNotification', (notification) => {
-      this.receiveNotification(notification);
+      this.receiveNotification(notification, 'SendStopScanOnDemandNotification');
     });
 
     connection.on('SendStopScanSuccessNotification', (notification) => {
-      this.receiveNotification(notification);
+      this.receiveNotification(notification, 'SendStopScanSuccessNotification');
     });
 
     connection.on('SendThreatFoundNotification', (notification) => {
-      this.receiveNotification(notification);
+      this.receiveNotification(notification, 'SendThreatFoundNotification');
     });
 
     connection.on('SendScanInProgressNotification', (notification) => {
-      this.receiveNotification(notification);
+      this.receiveNotification(notification, 'SendScanInProgressNotification');
     });
 
     connection.on('DisconnectClient', () => {
@@ -110,12 +109,14 @@ class App extends Component<{}, IState> {
   }
 
   private publishUnsentNotifications = () => {
-    if (this.state.hubConnection?.state == signalR.HubConnectionState.Connected)
+    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
       this.state.hubConnection.invoke("PublishUnsentNotifications");
   }
 
-  private receiveNotification = (notification: any) => {
+  private receiveNotification = (notification: AvService.Notification, notificationType: string) => {
     console.log(notification);
+    var updatedNotifications = this.state.notifications.concat([notification, notificationType]);
+    this.setState({ notifications: updatedNotifications, hubConnection: this.state.hubConnection });
   }
 }
 
