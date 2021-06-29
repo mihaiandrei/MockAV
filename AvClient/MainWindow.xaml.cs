@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using AvService.ClientSdk;
+using System.Windows;
 
 namespace AVClient
 {
@@ -20,7 +21,7 @@ namespace AVClient
 
         private async void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (avServiceClient.IsConnected)
+            if (avServiceClient.IsConnected || avServiceClient.IsConnecting)
                 return;
 
             await avServiceClient.Connect();

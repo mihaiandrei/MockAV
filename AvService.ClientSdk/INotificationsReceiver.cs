@@ -1,6 +1,6 @@
 ﻿using AvService.Shared;
 
-namespace AVClient
+namespace AvService.ClientSdk
 {
     public interface INotificationsReceiver
     {

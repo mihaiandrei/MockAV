@@ -2,14 +2,17 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 
-namespace AVClient
+namespace AvService.ClientSdk
 {
-    public class AvServiceClient
+    public class AvServiceClient : IAvServiceClient
     {
         HubConnection connection;
         private readonly INotificationsReceiver notificationsReceiver;
 
         public bool IsConnected => connection?.State == HubConnectionState.Connected;
+        public bool IsConnecting => connection?.State == HubConnectionState.Connecting ||
+                                    connection?.State == HubConnectionState.Reconnecting;
+
 
         public AvServiceClient(INotificationsReceiver notificationsReceiver)
         {

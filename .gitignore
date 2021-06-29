@@ -23,3 +23,6 @@
 /NotificationRepository/bin/Debug/netcoreapp3.1
 /NotificationRepository/obj/Debug/netcoreapp3.1
 /NotificationRepository/obj
+/AvService/notifications.db
+/AvService.ClientSdk/obj
+/AvService.ClientSdk/bin/Debug/netcoreapp3.1

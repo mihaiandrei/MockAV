@@ -1,4 +1,5 @@
-﻿using AvService.Shared;
+﻿using AvService.ClientSdk;
+using AvService.Shared;
 using System.Windows.Controls;
 
 namespace AVClient
