@@ -16,3 +16,10 @@
 /AvService.Domain/bin/Debug/netcoreapp3.1
 /AvService.Shared/bin/Debug/netcoreapp3.1
 /AvService.Shared/obj
+/AvService.Domain.Interfaces/bin/Debug/netcoreapp3.1
+/AvService.Domain.Interfaces/obj
+/AvService.Repository/bin/Debug/netcoreapp3.1
+/AvService.Repository/obj
+/NotificationRepository/bin/Debug/netcoreapp3.1
+/NotificationRepository/obj/Debug/netcoreapp3.1
+/NotificationRepository/obj

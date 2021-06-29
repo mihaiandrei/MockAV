@@ -1,7 +1,10 @@
 using AvService.Shared;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -114,6 +117,37 @@ namespace AvService.Domain.Test
             connectedClientManagerMock.Setup(cm => cm.ValidateConnection(It.IsAny<string>())).Returns(false);
             scannerManager.Disconect("connectionId");
             connectedClientManagerMock.Verify(n => n.Disconect(It.IsAny<string>()), Times.Never);
+        }
+
+        [Test]
+        public void deseri()
+        {
+            var notification = new StopScanSuccessNotification();
+
+            //Assembly assem = typeof(StopScanSuccessNotification).AssemblyQualifiedName;
+            Type protocolType = Type.GetType(notification.GetType().AssemblyQualifiedName);
+
+            var jsonText = JsonConvert.SerializeObject(notification);
+            var desert = JsonConvert.DeserializeObject(jsonText, protocolType);
+
+
+            switch (desert)
+            {
+                case StartScanOnDemandNotification n:
+                    break;
+
+                case StopScanSuccessNotification n:
+                    break;
+
+                case ScanInProgressNotification n:
+                    break;
+
+                case StopScanOnDemandNotification n:
+                    break;
+
+                case ThreatFoundNotification n:
+                    break;
+            }
         }
     }
 }

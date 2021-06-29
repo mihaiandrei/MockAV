@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AvService.Domain\AvService.Domain.csproj" />
+    <ProjectReference Include="..\AvService.Repository\AvService.Repository.csproj" />
     <ProjectReference Include="..\AvService.Shared\AvService.Shared.csproj" />
   </ItemGroup>
-
 </Project>

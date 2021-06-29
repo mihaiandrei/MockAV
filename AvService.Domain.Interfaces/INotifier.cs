@@ -1,7 +1,7 @@
 ﻿using AvService.Shared;
 using System.Threading.Tasks;
 
-namespace AvService
+namespace AvService.Domain
 {
     public interface INotifier
     {

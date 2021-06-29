@@ -6,15 +6,15 @@ namespace AvService.Domain
     public class Notifier : INotifier
     {
         private readonly IConnectedClientManager connectedClientManager;
-        private readonly INotificationRepository notificationPersister;
+        private readonly INotificationRepository notificationRepository;
         private readonly IScanHub scanHub;
 
         public Notifier(IScanHub scanHub,
                         IConnectedClientManager connectedClientManager,
-                        INotificationRepository notificationPersister)
+                        INotificationRepository notificationRepository)
         {
             this.connectedClientManager = connectedClientManager;
-            this.notificationPersister = notificationPersister;
+            this.notificationRepository = notificationRepository;
             this.scanHub = scanHub;
         }
 
@@ -23,7 +23,7 @@ namespace AvService.Domain
             if (connectedClientManager.IsClientConected)
                 await scanHub.SendNotification(notification, connectedClientManager.ConnectionId);
             else
-                notificationPersister.AddNotification(notification);
+                await notificationRepository.AddNotificationAsync(notification);
         }
 
         public async Task PushUnsentNotifications()
@@ -31,12 +31,13 @@ namespace AvService.Domain
             if (!connectedClientManager.IsClientConected)
                 return;
 
-            var unsentNotifications = notificationPersister.GetNotifications();
+            var unsentNotifications = await notificationRepository.GetNotificationsAsync();
+
             foreach (var notification in unsentNotifications)
             {
                 await scanHub.SendNotification(notification, connectedClientManager.ConnectionId);
-                notificationPersister.RemoveNotification(notification);
             }
+            await notificationRepository.RemoveNotificationsAsync();
         }
 
         public async Task DisconectClient(string connectionId)

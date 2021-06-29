@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvService.Domain.Interfaces\AvService.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\AvService.Shared\AvService.Shared.csproj" />
   </ItemGroup>
 

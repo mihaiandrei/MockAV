@@ -1,4 +1,5 @@
 using AvService.Domain;
+using AvService.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,14 +14,23 @@ namespace AvService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
+                                                                .AllowAnyHeader()
+                                                                .AllowAnyMethod());
+            });
+
             services.AddSingleton<IScannerService, ScannerService>();
             services.AddSingleton<IConnectedClientManager, ConnectedClientManager>();
             services.AddSingleton<INotificationRepository, NotificationRepository>();
             services.AddSingleton<INotifier, Notifier>();
             services.AddSingleton<IScanner, Scanner>();
             services.AddSingleton<IScanHub, ContextHolder>();
+            services.AddScoped<DatabaseContext>();
 
             services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +57,11 @@ namespace AvService
                 endpoints.MapHub<ScanHub>("/scanhub");
             });
 
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                context.Database.EnsureCreated();
+            }
         }
     }
 }
