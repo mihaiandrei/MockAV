@@ -26,3 +26,13 @@
 /AvService/notifications.db
 /AvService.ClientSdk/obj
 /AvService.ClientSdk/bin/Debug/netcoreapp3.1
+/.vs
+/AvClient/bin/Debug/net5.0-windows
+/AvService/bin/Debug/net5.0
+/AvService.Repository/bin/Debug/net5.0
+/AvService.Shared/bin/Debug/net5.0
+/AvService.ClientSdk/bin/Debug/net5.0
+/AvService.Domain/bin/Debug/net5.0
+/AvService.Domain.Interfaces/bin/Debug/net5.0
+/AvService.Domain.Test/bin/Debug/net5.0
+/AvService.Domain.Test/bin/Release/net5.0

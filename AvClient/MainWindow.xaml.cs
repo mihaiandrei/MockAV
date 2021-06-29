@@ -49,6 +49,9 @@ namespace AVClient
 
         private async void StopOnDemandButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!avServiceClient.IsConnected)
+                return;
+
             await avServiceClient.StopOnDemandScan();
             LogsListBox.Items.Add("Stopped On Demand Scan");
         }

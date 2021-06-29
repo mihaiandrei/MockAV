@@ -3,121 +3,136 @@ import * as signalR from "@microsoft/signalr";
 import './App.css';
 
 import * as AvService from '../../../AvService.Shared/AvService.Shared';
+import { findDOMNode } from 'react-dom';
 
 interface IState {
-  hubConnection: signalR.HubConnection | null;
-  notifications: [AvService.Notification, string][]
+    hubConnection: signalR.HubConnection | null;
+    notifications: [AvService.Notification, string][]
 }
 
 class App extends Component<{}, IState> {
 
-  constructor(props: any) {
-    super(props);
-    this.state = { notifications: [], hubConnection: null };
-  }
+    constructor(props: any) {
+        super(props);
+        this.state = { notifications: [], hubConnection: null };
+    }
 
-  render() {
-    const listItems = this.state.notifications.map((item: [AvService.Notification, string]) => {
-      return (<div key={Math.random().toString(36).substr(2, 9)}>{JSON.stringify(item)}</div>
-      )
-    });
+    render() {
+        const listItems = this.state.notifications.map((item: [AvService.Notification, string]) => {
+            return (<div key={Math.random().toString(36).substr(2, 9)}>{JSON.stringify(item)}</div>
+            )
+        });
 
-    return (
-      <div className="App">
-        <div>
-          <button onClick={() => this.connect()}>Connect</button>
-          <button onClick={() => this.disconnect()}>Disconnect</button>
+        return (
+            <div className="App">
+                <div>
+                    <button onClick={() => this.connect()}>Connect</button>
+                    <button onClick={() => this.disconnect()}>Disconnect</button>
 
-          <button onClick={() => this.enableRealTimeScan()}>Enable Real Time Scan</button>
-          <button onClick={() => this.disableRealTimeScan()}>Disable Real Time Scan</button>
+                    <button onClick={() => this.enableRealTimeScan()}>Enable Real Time Scan</button>
+                    <button onClick={() => this.disableRealTimeScan()}>Disable Real Time Scan</button>
 
-          <button onClick={() => this.startOnDemandScan()}>Start On Demand Scan</button>
-          <button onClick={() => this.stopOnDemandScan()}>Stop On Demand Scan</button>
+                    <button onClick={() => this.startOnDemandScan()}>Start On Demand Scan</button>
+                    <button onClick={() => this.stopOnDemandScan()}>Stop On Demand Scan</button>
 
-          <button onClick={() => this.publishUnsentNotifications()}>Publish Unsent Notifications</button>
-        </div>
-        <div>{listItems}</div>
-      </div>
-    );
-  }
+                    <button onClick={() => this.publishUnsentNotifications()}>Publish Unsent Notifications</button>
+                </div>
+                <div>{listItems}</div>
+            </div>
+        );
+    }
 
-  componentDidMount = () => {
-    console.log('componentDidMount');
+    private connect = async () => {
 
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5000/scanhub")
-      .build();
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected ||
+            this.state.hubConnection?.state === signalR.HubConnectionState.Connecting)
+            return;
 
-    connection.on('SendStartScanOnDemandNotification', (notification) => {
-      this.receiveNotification(notification, 'SendStartScanOnDemandNotification');
-    });
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5000/scanhub")
+            .build();
 
-    connection.on('SendStopScanOnDemandNotification', (notification) => {
-      this.receiveNotification(notification, 'SendStopScanOnDemandNotification');
-    });
+        connection.on('SendStartScanOnDemandNotification', (notification) => {
+            this.receiveNotification(notification, 'SendStartScanOnDemandNotification');
+        });
 
-    connection.on('SendStopScanSuccessNotification', (notification) => {
-      this.receiveNotification(notification, 'SendStopScanSuccessNotification');
-    });
+        connection.on('SendStopScanOnDemandNotification', (notification) => {
+            this.receiveNotification(notification, 'SendStopScanOnDemandNotification');
+        });
 
-    connection.on('SendThreatFoundNotification', (notification) => {
-      this.receiveNotification(notification, 'SendThreatFoundNotification');
-    });
+        connection.on('SendStopScanSuccessNotification', (notification) => {
+            this.receiveNotification(notification, 'SendStopScanSuccessNotification');
+        });
 
-    connection.on('SendScanInProgressNotification', (notification) => {
-      this.receiveNotification(notification, 'SendScanInProgressNotification');
-    });
+        connection.on('SendThreatFoundNotification', (notification) => {
+            this.receiveNotification(notification, 'SendThreatFoundNotification');
+        });
 
-    connection.on('DisconnectClient', () => {
-      this.state.hubConnection?.stop();
-    });
+        connection.on('SendScanInProgressNotification', (notification) => {
+            this.receiveNotification(notification, 'SendScanInProgressNotification');
+        });
 
-    this.setState({
-      hubConnection: connection,
-      notifications: []
-    });
-  }
+        connection.on('DisconnectClient', async () => {
+            try {
+                if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected) {
+                    console.log("stopping connection");
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    await this.state.hubConnection?.stop();
+                    console.log("connection stopped");
+                }
+            }
+            catch (e) { }
+            finally {
+                this.setState({ notifications: this.state.notifications, hubConnection: null });
+            }
+        });
 
-  private connect = async () => {
-    await this.state.hubConnection?.start().catch(err => console.log(err));
-    await this.state.hubConnection?.invoke("Connect");
-  }
+        this.setState({
+            hubConnection: connection,
+            notifications: []
+        });
 
-  private disconnect = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection?.invoke("Disconnect");
-  }
+        await connection.start();
 
-  private disableRealTimeScan = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection.invoke("DisableRealTimeScan");
-  }
+        if (connection.state === signalR.HubConnectionState.Connected)
+            await connection.invoke("Connect");
+    }
 
-  private enableRealTimeScan = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection.invoke("EnableRealTimeScan");
-  }
+    private disconnect = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection?.invoke("Disconnect");
+    }
 
-  private startOnDemandScan = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection.invoke("StartOnDemandScan");
-  }
+    private disableRealTimeScan = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection.invoke("DisableRealTimeScan");
+    }
 
-  private stopOnDemandScan = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection.invoke("StopOnDemandScan");
-  }
+    private enableRealTimeScan = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection.invoke("EnableRealTimeScan");
+    }
 
-  private publishUnsentNotifications = () => {
-    if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
-      this.state.hubConnection.invoke("PublishUnsentNotifications");
-  }
+    private startOnDemandScan = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection.invoke("StartOnDemandScan");
+    }
 
-  private receiveNotification = (notification: AvService.Notification, notificationType: string) => {
-    console.log(notification);
-    var updatedNotifications = this.state.notifications.concat([notification, notificationType]);
-    this.setState({ notifications: updatedNotifications, hubConnection: this.state.hubConnection });
-  }
+    private stopOnDemandScan = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection.invoke("StopOnDemandScan");
+    }
+
+    private publishUnsentNotifications = async () => {
+        if (this.state.hubConnection?.state === signalR.HubConnectionState.Connected)
+            await this.state.hubConnection.invoke("PublishUnsentNotifications");
+    }
+
+    private receiveNotification = (notification: AvService.Notification, notificationType: string) => {
+        console.log(notification);
+        var updatedNotifications = this.state.notifications.concat([notification, notificationType]);
+        this.setState({ notifications: updatedNotifications, hubConnection: this.state.hubConnection });
+    }
 }
 
 export default App;
